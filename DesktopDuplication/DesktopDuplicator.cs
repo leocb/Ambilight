@@ -11,6 +11,7 @@ using Rectangle = SharpDX.Rectangle;
 using System.Drawing;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using SharpDX.Mathematics.Interop;
 
 namespace DesktopDuplication
 {
@@ -93,8 +94,8 @@ namespace DesktopDuplication
                 CpuAccessFlags = CpuAccessFlags.Read,
                 BindFlags = BindFlags.None,
                 Format = Format.B8G8R8A8_UNorm,
-                Width = this.mOutputDesc.DesktopBounds.Width,
-                Height = this.mOutputDesc.DesktopBounds.Height,
+                Width = this.mOutputDesc.DesktopBounds.Right,
+                Height = this.mOutputDesc.DesktopBounds.Bottom,
                 OptionFlags = ResourceOptionFlags.None,
                 MipLevels = 1,
                 ArraySize = 1,
@@ -187,18 +188,18 @@ namespace DesktopDuplication
                     frame.MovedRegions[i] = new MovedRegion()
                     {
                         Source = new System.Drawing.Point(movedRectangles[i].SourcePoint.X, movedRectangles[i].SourcePoint.Y),
-                        Destination = new System.Drawing.Rectangle(movedRectangles[i].DestinationRect.X, movedRectangles[i].DestinationRect.Y, movedRectangles[i].DestinationRect.Width, movedRectangles[i].DestinationRect.Height)
+                        Destination = new System.Drawing.Rectangle(movedRectangles[i].DestinationRect.Left, movedRectangles[i].DestinationRect.Top, movedRectangles[i].DestinationRect.Right, movedRectangles[i].DestinationRect.Bottom)
                     };
                 }
 
                 // Get dirty regions
                 int dirtyRegionsLength = 0;
-                Rectangle[] dirtyRectangles = new Rectangle[frameInfo.TotalMetadataBufferSize];
+                RawRectangle[] dirtyRectangles = new RawRectangle[frameInfo.TotalMetadataBufferSize];
                 mDeskDupl.GetFrameDirtyRects(dirtyRectangles.Length, dirtyRectangles, out dirtyRegionsLength);
                 frame.UpdatedRegions = new System.Drawing.Rectangle[dirtyRegionsLength / Marshal.SizeOf(typeof(Rectangle))];
                 for (int i = 0; i < frame.UpdatedRegions.Length; i++)
                 {
-                    frame.UpdatedRegions[i] = new System.Drawing.Rectangle(dirtyRectangles[i].X, dirtyRectangles[i].Y, dirtyRectangles[i].Width, dirtyRectangles[i].Height);
+                    frame.UpdatedRegions[i] = new System.Drawing.Rectangle(dirtyRectangles[i].Left, dirtyRectangles[i].Top, dirtyRectangles[i].Right, dirtyRectangles[i].Bottom);
                 }
             }
             else
@@ -275,16 +276,16 @@ namespace DesktopDuplication
             // Get the desktop capture texture
             var mapSource = mDevice.ImmediateContext.MapSubresource(desktopImageTexture, 0, MapMode.Read, MapFlags.None);
 
-            FinalImage = new System.Drawing.Bitmap(mOutputDesc.DesktopBounds.Width, mOutputDesc.DesktopBounds.Height, PixelFormat.Format32bppRgb);
-            var boundsRect = new System.Drawing.Rectangle(0, 0, mOutputDesc.DesktopBounds.Width, mOutputDesc.DesktopBounds.Height);
+            FinalImage = new System.Drawing.Bitmap(mOutputDesc.DesktopBounds.Right, mOutputDesc.DesktopBounds.Bottom, PixelFormat.Format32bppRgb);
+            var boundsRect = new System.Drawing.Rectangle(0, 0, mOutputDesc.DesktopBounds.Right, mOutputDesc.DesktopBounds.Bottom);
             // Copy pixels from screen capture Texture to GDI bitmap
             var mapDest = FinalImage.LockBits(boundsRect, ImageLockMode.WriteOnly, FinalImage.PixelFormat);
             var sourcePtr = mapSource.DataPointer;
             var destPtr = mapDest.Scan0;
-            for (int y = 0; y < mOutputDesc.DesktopBounds.Height; y++)
+            for (int y = 0; y < mOutputDesc.DesktopBounds.Bottom; y++)
             {
                 // Copy a single line 
-                Utilities.CopyMemory(destPtr, sourcePtr, mOutputDesc.DesktopBounds.Width * 4);
+                Utilities.CopyMemory(destPtr, sourcePtr, mOutputDesc.DesktopBounds.Right * 4);
 
                 // Advance pointers
                 sourcePtr = IntPtr.Add(sourcePtr, mapSource.RowPitch);
