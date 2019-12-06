@@ -45,7 +45,11 @@ namespace DesktopDuplication.Demo
         {
             if (InvokeRequired)
             {
-                Invoke(new frameEventDelegate(frame_status_update), new object[] { frameMS });
+                try
+                {
+                    Invoke(new frameEventDelegate(frame_status_update), new object[] { frameMS });
+                }
+                catch { }
                 return;
             }
 
@@ -61,8 +65,6 @@ namespace DesktopDuplication.Demo
                 sw.Restart();
             while (!stopUpdate)
             {
-                Application.DoEvents();
-
                 DesktopFrame frame = null;
                 try
                 {
@@ -70,7 +72,6 @@ namespace DesktopDuplication.Demo
                 }
                 catch
                 {
-                    //desktopDuplicator = new DesktopDuplicator(0);
                     continue;
                 }
 

@@ -46,7 +46,7 @@ namespace DesktopDuplication
         public DesktopDuplicator(int whichGraphicsCardAdapter, int whichOutputDevice)
         {
             this.mWhichOutputDevice = whichOutputDevice;
-            Adapter1 adapter = null;
+            Adapter1 adapter;
             try
             {
                 adapter = new Factory1().GetAdapter1(whichGraphicsCardAdapter);
@@ -56,7 +56,7 @@ namespace DesktopDuplication
                 throw new DesktopDuplicationException("Could not find the specified graphics card adapter.");
             }
             this.mDevice = new Device(adapter, DeviceCreationFlags.SingleThreaded | DeviceCreationFlags.PreventAlteringLayerSettingsFromRegistry);
-            Output output = null;
+            Output output;
             try
             {
                 output = adapter.GetOutput(whichOutputDevice);
@@ -67,7 +67,7 @@ namespace DesktopDuplication
             }
             var output1 = output.QueryInterface<Output1>();
             this.mOutputDesc = output.Description;
-            FinalImage = new System.Drawing.Bitmap(mOutputDesc.DesktopBounds.Right, mOutputDesc.DesktopBounds.Bottom, PixelFormat.Format32bppRgb);
+            FinalImage = new Bitmap(mOutputDesc.DesktopBounds.Right, mOutputDesc.DesktopBounds.Bottom, PixelFormat.Format32bppRgb);
             this.mTextureDesc = new Texture2DDescription()
             {
                 CpuAccessFlags = CpuAccessFlags.Read,
@@ -114,13 +114,7 @@ namespace DesktopDuplication
                 }
                 if (processFrame) ProcessFrame(frame);
             }
-            catch
-            {
-            }
-            finally
-            {
-                ReleaseFrame();
-            }
+            catch { }
             return frame;
         }
 
@@ -132,7 +126,12 @@ namespace DesktopDuplication
             frameInfo = new OutputDuplicateFrameInformation();
             try
             {
-                mDeskDupl.AcquireNextFrame(500, out frameInfo, out desktopResource);
+                mDeskDupl.ReleaseFrame();
+            }
+            catch { }
+            try
+            {
+                mDeskDupl.AcquireNextFrame(1000, out frameInfo, out desktopResource);
             }
             catch (SharpDXException ex)
             {
@@ -275,21 +274,6 @@ namespace DesktopDuplication
             FinalImage.UnlockBits(mapDest);
             mDevice.ImmediateContext.UnmapSubresource(desktopImageTexture, 0);
             frame.DesktopImage = FinalImage;
-        }
-
-        private void ReleaseFrame()
-        {
-            try
-            {
-                mDeskDupl.ReleaseFrame();
-            }
-            catch (SharpDXException ex)
-            {
-                if (ex.ResultCode.Failure)
-                {
-                    throw new DesktopDuplicationException("Failed to release frame.");
-                }
-            }
         }
     }
 }
