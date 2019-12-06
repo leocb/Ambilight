@@ -29,29 +29,7 @@ namespace DesktopDuplication
         private OutputDuplicateFrameInformation frameInfo = new OutputDuplicateFrameInformation();
         private int mWhichOutputDevice = -1;
 
-        private Bitmap finalImage1, finalImage2;
-        private bool isFinalImage1 = false;
-        private Bitmap FinalImage
-        {
-            get
-            {
-                return isFinalImage1 ? finalImage1 : finalImage2;
-            }
-            set
-            {
-                if (isFinalImage1)
-                {
-                    finalImage2 = value;
-                    if (finalImage1 != null) finalImage1.Dispose();
-                }
-                else
-                {
-                    finalImage1 = value;
-                    if (finalImage2 != null) finalImage2.Dispose();
-                }
-                isFinalImage1 = !isFinalImage1;
-            }
-        }
+        private System.Drawing.Bitmap FinalImage;
 
         /// <summary>
         /// Duplicates the output of the specified monitor.
@@ -77,7 +55,7 @@ namespace DesktopDuplication
             {
                 throw new DesktopDuplicationException("Could not find the specified graphics card adapter.");
             }
-            this.mDevice = new Device(adapter);
+            this.mDevice = new Device(adapter, DeviceCreationFlags.SingleThreaded | DeviceCreationFlags.PreventAlteringLayerSettingsFromRegistry);
             Output output = null;
             try
             {
@@ -89,6 +67,7 @@ namespace DesktopDuplication
             }
             var output1 = output.QueryInterface<Output1>();
             this.mOutputDesc = output.Description;
+            FinalImage = new System.Drawing.Bitmap(mOutputDesc.DesktopBounds.Right, mOutputDesc.DesktopBounds.Bottom, PixelFormat.Format32bppRgb);
             this.mTextureDesc = new Texture2DDescription()
             {
                 CpuAccessFlags = CpuAccessFlags.Read,
@@ -119,7 +98,7 @@ namespace DesktopDuplication
         /// <summary>
         /// Retrieves the latest desktop image and associated metadata.
         /// </summary>
-        public DesktopFrame GetLatestFrame()
+        public DesktopFrame GetLatestFrame(bool processMetaData, bool processFrame)
         {
             var frame = new DesktopFrame();
             // Try to get the latest frame; this may timeout
@@ -128,20 +107,19 @@ namespace DesktopDuplication
                 return null;
             try
             {
-                RetrieveFrameMetadata(frame);
-                RetrieveCursorMetadata(frame);
-                ProcessFrame(frame);
+                if (processMetaData)
+                {
+                    RetrieveFrameMetadata(frame);
+                    RetrieveCursorMetadata(frame);
+                }
+                if (processFrame) ProcessFrame(frame);
             }
             catch
             {
-                ReleaseFrame();
             }
-            try
+            finally
             {
                 ReleaseFrame();
-            }
-            catch { 
-            //    throw new DesktopDuplicationException("Couldn't release frame.");  
             }
             return frame;
         }
@@ -238,7 +216,7 @@ namespace DesktopDuplication
                 pointerInfo.LastTimeStamp = frameInfo.LastMouseUpdateTime;
                 pointerInfo.Visible = frameInfo.PointerPosition.Visible;
             }
-                        
+
             // No new shape
             if (frameInfo.PointerShapeBufferSize == 0)
                 return;
@@ -270,13 +248,14 @@ namespace DesktopDuplication
             //frame.CursorVisible = pointerInfo.Visible;
             frame.CursorLocation = new System.Drawing.Point(pointerInfo.Position.X, pointerInfo.Position.Y);
         }
-        
+
+
+
         private void ProcessFrame(DesktopFrame frame)
         {
             // Get the desktop capture texture
             var mapSource = mDevice.ImmediateContext.MapSubresource(desktopImageTexture, 0, MapMode.Read, MapFlags.None);
 
-            FinalImage = new System.Drawing.Bitmap(mOutputDesc.DesktopBounds.Right, mOutputDesc.DesktopBounds.Bottom, PixelFormat.Format32bppRgb);
             var boundsRect = new System.Drawing.Rectangle(0, 0, mOutputDesc.DesktopBounds.Right, mOutputDesc.DesktopBounds.Bottom);
             // Copy pixels from screen capture Texture to GDI bitmap
             var mapDest = FinalImage.LockBits(boundsRect, ImageLockMode.WriteOnly, FinalImage.PixelFormat);
@@ -284,7 +263,7 @@ namespace DesktopDuplication
             var destPtr = mapDest.Scan0;
             for (int y = 0; y < mOutputDesc.DesktopBounds.Bottom; y++)
             {
-                // Copy a single line 
+                // Copy a single line
                 Utilities.CopyMemory(destPtr, sourcePtr, mOutputDesc.DesktopBounds.Right * 4);
 
                 // Advance pointers
