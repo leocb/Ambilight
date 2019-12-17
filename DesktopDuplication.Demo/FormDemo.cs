@@ -1,5 +1,4 @@
-﻿using OpenTK;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,7 +14,17 @@ namespace DesktopDuplication.Demo
 {
     public partial class FormDemo : Form
     {
+        private bool performanceMonitor = true;
+
         private DesktopDuplicator desktopDuplicator;
+        Stopwatch sw = new Stopwatch();
+        enum VSyncLevel
+        {
+            None,
+            Vsync,
+            DoubleVsync
+        }
+        VSyncLevel vsync;
 
         public FormDemo()
         {
@@ -30,64 +39,51 @@ namespace DesktopDuplication.Demo
                 MessageBox.Show(ex.ToString());
             }
 
-            frameEvent += frame_status_update;
+            if (!performanceMonitor) chart1.Visible = false;
+            if (performanceMonitor) PerformanceMonitorEvent += frame_status_update;
         }
 
-        Stopwatch sw = new Stopwatch();
         private void FormDemo_Shown(object sender, EventArgs e)
         {
             Thread tr = new Thread(() =>
             {
-
-                using (var openTKHandler = new GameWindow(1, 1, OpenTK.Graphics.GraphicsMode.Default, "", GameWindowFlags.FixedWindow))
-                {
-                    sw = new Stopwatch();
-                    sw.Restart();
-                    openTKHandler.RenderFrame += OpenTKHandler_UpdateFrame;
-                    openTKHandler.VSync = VSyncMode.Adaptive;
-                    openTKHandler.Run(60.0, 30.0);
-                }
+                if (performanceMonitor) sw.Restart();
+                vsync = VSyncLevel.DoubleVsync;
+                captureLoop();
             });
             tr.Start();
         }
-        private void OpenTKHandler_UpdateFrame(object sender, FrameEventArgs e)
+        DesktopFrame frame = null;
+
+        private void captureLoop()
         {
-            DesktopFrame frame = null;
-            try
+            while (!stopUpdate)
             {
-                frame = desktopDuplicator.GetLatestFrame(false, true);
+                if (vsync >= VSyncLevel.Vsync) desktopDuplicator.waitForVSync();
+                if (vsync >= VSyncLevel.DoubleVsync) desktopDuplicator.waitForVSync();
+
+                try
+                {
+                    frame = desktopDuplicator.GetLatestFrame();
+                }
+                catch { }
+
+                if (frame == null) continue;
+
+                // uncomment the line bellow to enable drawing on screen
+                // if(updateBgEnabled) BackgroundImage = frame.DesktopImage;
+
+                PerformanceMonitorEvent?.BeginInvoke(sw.Elapsed.TotalMilliseconds, null, null);
+                if (performanceMonitor) sw.Restart();
             }
-            catch { }
-
-            //if (frame != null)
-            //{
-            //LabelCursor.Location = frame.CursorLocation;
-            //LabelCursor.Visible = frame.CursorVisible;
-            ////Debug.WriteLine("--------------------------------------------------------");
-            //foreach (var moved in frame.MovedRegions)
-            //{
-            //    //Debug.WriteLine(String.Format("Moved: {0} -> {1}", moved.Source, moved.Destination));
-            //    MovedRegion.Location = moved.Destination.Location;
-            //    MovedRegion.Size = moved.Destination.Size;
-            //}
-            //foreach (var updated in frame.UpdatedRegions)
-            //{
-            //    //Debug.WriteLine(String.Format("Updated: {0}", updated.ToString()));
-            //    UpdatedRegion.Location = updated.Location;
-            //    UpdatedRegion.Size = updated.Size;
-            //}
-            //this.BackgroundImage = frame.DesktopImage;
-            //}
-
-            frameEvent?.BeginInvoke(sw.Elapsed.TotalMilliseconds, null, null);
-            sw.Restart();
         }
 
         private delegate void frameEventDelegate(double frameMS);
-        private static event frameEventDelegate frameEvent;
+        private static event frameEventDelegate PerformanceMonitorEvent;
 
         private void frame_status_update(double frameMS)
         {
+            if (stopUpdate) return;
             if (InvokeRequired)
             {
                 try
@@ -98,7 +94,7 @@ namespace DesktopDuplication.Demo
                 return;
             }
 
-            if (!stopUpdate && chart1.Series[0].Points.Count > 200)
+            if (chart1.Series[0].Points.Count > 200)
                 chart1.Series[0].Points.RemoveAt(0);
             chart1.Series[0].Points.Add(Math.Round(1000 / frameMS));
             Text = Math.Round(1000 / frameMS).ToString();
@@ -110,5 +106,17 @@ namespace DesktopDuplication.Demo
         }
 
         private bool stopUpdate = false;
+        private bool updateBgEnabled = true;
+
+        private void FormDemo_ResizeBegin(object sender, EventArgs e)
+        {
+            BackgroundImage = null;
+            updateBgEnabled = false;
+        }
+
+        private void FormDemo_ResizeEnd(object sender, EventArgs e)
+        {
+            updateBgEnabled = true;
+        }
     }
 }
