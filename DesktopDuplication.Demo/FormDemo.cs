@@ -14,17 +14,10 @@ namespace DesktopDuplication.Demo
 {
     public partial class FormDemo : Form
     {
-        private bool performanceMonitor = true;
 
+        private bool performanceMonitor = true;
         private DesktopDuplicator desktopDuplicator;
         Stopwatch sw = new Stopwatch();
-        enum VSyncLevel
-        {
-            None,
-            Vsync,
-            DoubleVsync
-        }
-        VSyncLevel vsync;
 
         public FormDemo()
         {
@@ -32,7 +25,7 @@ namespace DesktopDuplication.Demo
 
             try
             {
-                desktopDuplicator = new DesktopDuplicator(0);
+                desktopDuplicator = new DesktopDuplicator(0, DesktopDuplicator.VSyncLevel.DoubleVsync);
             }
             catch (Exception ex)
             {
@@ -48,7 +41,6 @@ namespace DesktopDuplication.Demo
             Thread tr = new Thread(() =>
             {
                 if (performanceMonitor) sw.Restart();
-                vsync = VSyncLevel.DoubleVsync;
                 captureLoop();
             });
             tr.Start();
@@ -59,9 +51,6 @@ namespace DesktopDuplication.Demo
         {
             while (!stopUpdate)
             {
-                if (vsync >= VSyncLevel.Vsync) desktopDuplicator.waitForVSync();
-                if (vsync >= VSyncLevel.DoubleVsync) desktopDuplicator.waitForVSync();
-
                 try
                 {
                     frame = desktopDuplicator.GetLatestFrame();
@@ -72,7 +61,7 @@ namespace DesktopDuplication.Demo
 
                 // uncomment the line bellow to enable drawing on screen
                 // if(updateBgEnabled) BackgroundImage = frame.DesktopImage;
-
+                
                 PerformanceMonitorEvent?.BeginInvoke(sw.Elapsed.TotalMilliseconds, null, null);
                 if (performanceMonitor) sw.Restart();
             }

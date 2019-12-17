@@ -28,6 +28,14 @@ namespace DesktopDuplication
 
         private OutputDuplicateFrameInformation frameInfo = new OutputDuplicateFrameInformation();
         private int mWhichOutputDevice = -1;
+        public enum VSyncLevel
+        {
+            None,
+            Vsync,
+            DoubleVsync
+        }
+
+        private VSyncLevel vSync;
 
         private Bitmap finalImage1, finalImage2;
         private bool imageSwitch = false;
@@ -59,16 +67,17 @@ namespace DesktopDuplication
         /// Duplicates the output of the specified monitor.
         /// </summary>
         /// <param name="whichMonitor">The output device to duplicate (i.e. monitor). Begins with zero, which seems to correspond to the primary monitor.</param>
-        public DesktopDuplicator(int whichMonitor)
-            : this(0, whichMonitor) { }
+        public DesktopDuplicator(int whichMonitor, VSyncLevel vSync)
+            : this(0, whichMonitor, vSync) { }
 
         /// <summary>
         /// Duplicates the output of the specified monitor on the specified graphics adapter.
         /// </summary>
         /// <param name="whichGraphicsCardAdapter">The adapter which contains the desired outputs.</param>
         /// <param name="whichOutputDevice">The output device to duplicate (i.e. monitor). Begins with zero, which seems to correspond to the primary monitor.</param>
-        public DesktopDuplicator(int whichGraphicsCardAdapter, int whichOutputDevice)
+        public DesktopDuplicator(int whichGraphicsCardAdapter, int whichOutputDevice, VSyncLevel vSync)
         {
+            this.vSync = vSync;
             this.mWhichOutputDevice = whichOutputDevice;
             Adapter1 adapter;
             try
@@ -125,11 +134,18 @@ namespace DesktopDuplication
         public DesktopFrame GetLatestFrame()
         {
             var frame = new DesktopFrame();
+            
+            if (vSync >= VSyncLevel.Vsync) waitForVSync();
+            if (vSync >= VSyncLevel.DoubleVsync) waitForVSync();
+
+            ReleaseFrame();
+            
             // Try to get the latest frame; this may timeout
             bool retrievalTimedOut = RetrieveFrame();
             if (retrievalTimedOut) return null;
-            ReleaseFrame();
+            
             ProcessFrame(frame);
+            
             return frame;
         }
 
