@@ -33,7 +33,7 @@ namespace AmbilightController
                 MessageBox.Show(ex.ToString());
             }
 
-            if (!performanceMonitor) chart1.Visible = false;
+            //if (!performanceMonitor) chart1.Visible = false;
             if (performanceMonitor) PerformanceMonitorEvent += frame_status_update;
         }
 
@@ -49,23 +49,27 @@ namespace AmbilightController
         DesktopFrame frame = null;
 
         private void captureLoop()
-        { 
-            while (!stopUpdate)
+        {
+            try
             {
-                try
+                while (!stopUpdate)
                 {
-                    frame = desktopDuplicator.GetLatestFrame();
+                    try
+                    {
+                        frame = desktopDuplicator.GetLatestFrame();
+                    }
+                    catch { }
+
+                    if (frame == null) continue;
+
+                    // uncomment the line bellow to enable drawing on screen
+                    // if(updateBgEnabled) BackgroundImage = frame.DesktopImage;
+
+                    PerformanceMonitorEvent?.BeginInvoke(sw.Elapsed.TotalMilliseconds, null, null);
+                    if (performanceMonitor) sw.Restart();
                 }
-                catch { }
-
-                if (frame == null) continue;
-
-                // uncomment the line bellow to enable drawing on screen
-                // if(updateBgEnabled) BackgroundImage = frame.DesktopImage;
-                
-                PerformanceMonitorEvent?.BeginInvoke(sw.Elapsed.TotalMilliseconds, null, null);
-                if (performanceMonitor) sw.Restart();
             }
+            catch (ThreadAbortException) { }
         }
 
         private delegate void frameEventDelegate(double frameMS);
@@ -84,9 +88,9 @@ namespace AmbilightController
                 return;
             }
 
-            if (chart1.Series[0].Points.Count > 200)
-                chart1.Series[0].Points.RemoveAt(0);
-            chart1.Series[0].Points.Add(Math.Round(1000 / frameMS));
+            //if (chart1.Series[0].Points.Count > 200)
+            //    chart1.Series[0].Points.RemoveAt(0);
+            //chart1.Series[0].Points.Add(Math.Round(1000 / frameMS));
             Text = Math.Round(1000 / frameMS).ToString();
         }
 

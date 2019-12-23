@@ -54,19 +54,34 @@
     <Compile Include="ConfigForm.Designer.cs">
       <DependentUpon>ConfigForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="LED.cs">
+    <Compile Include="LedDisplay.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="LED.Designer.cs">
-      <DependentUpon>LED.cs</DependentUpon>
+    <Compile Include="LedDisplay.Designer.cs">
+      <DependentUpon>LedDisplay.cs</DependentUpon>
     </Compile>
+    <Compile Include="LedModeConfigure.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LedModeConfigure.Designer.cs">
+      <DependentUpon>LedModeConfigure.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ModeFixed.cs" />
+    <Compile Include="ModeMouseXY.cs" />
+    <Compile Include="ModePulse.cs" />
+    <Compile Include="ModeRainbow.cs" />
+    <Compile Include="ModeScreenCapture.cs" />
+    <Compile Include="ModeSparkle.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="ConfigForm.resx">
       <DependentUpon>ConfigForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="LED.resx">
-      <DependentUpon>LED.cs</DependentUpon>
+    <EmbeddedResource Include="LedDisplay.resx">
+      <DependentUpon>LedDisplay.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LedModeConfigure.resx">
+      <DependentUpon>LedModeConfigure.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
