@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace DesktopDuplication.Demo
+namespace AmbilightController
 {
     public partial class LED : UserControl
     {

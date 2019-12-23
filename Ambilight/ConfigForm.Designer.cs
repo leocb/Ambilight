@@ -1,4 +1,4 @@
-﻿namespace DesktopDuplication.Demo
+﻿namespace AmbilightController
 {
     partial class ConfigForm
     {

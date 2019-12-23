@@ -9,8 +9,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DesktopDuplication;
 
-namespace DesktopDuplication.Demo
+namespace AmbilightController
 {
     public partial class ConfigForm : Form
     {
