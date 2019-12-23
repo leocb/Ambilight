@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesktopDuplication", "DesktopDuplication\DesktopDuplication.csproj", "{222C215B-663F-4BD6-9B3E-8FA99C867B22}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesktopDuplication.Demo", "DesktopDuplication.Demo\DesktopDuplication.Demo.csproj", "{74CC9032-E6E6-4620-B9B7-36251023A1C9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmbilightController", "DesktopDuplication.Demo\AmbilightController.csproj", "{74CC9032-E6E6-4620-B9B7-36251023A1C9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,5 +24,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {49A4E7C9-5BBE-436E-A793-3BDB13D938E5}
 	EndGlobalSection
 EndGlobal
