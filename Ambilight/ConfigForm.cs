@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using DesktopDuplication;
+using static AmbilightController.LedDisplay;
 
 namespace AmbilightController
 {
@@ -45,6 +46,8 @@ namespace AmbilightController
                 captureLoop();
             });
             tr.Start();
+
+            ledDisplay.UpdateDisplayQuantity(40, ScreenRegion.Top);
         }
         DesktopFrame frame = null;
 
@@ -100,17 +103,23 @@ namespace AmbilightController
         }
 
         private bool stopUpdate = false;
-        private bool updateBgEnabled = true;
 
         private void FormDemo_ResizeBegin(object sender, EventArgs e)
         {
             BackgroundImage = null;
-            updateBgEnabled = false;
         }
 
         private void FormDemo_ResizeEnd(object sender, EventArgs e)
         {
-            updateBgEnabled = true;
         }
+
+
+        #region Update Led Display Quantity
+
+        List<LedPoint> LedList = new List<LedPoint>();
+
+
+
+        #endregion
     }
 }

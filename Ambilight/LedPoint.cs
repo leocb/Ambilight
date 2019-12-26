@@ -10,11 +10,17 @@ using System.Windows.Forms;
 
 namespace AmbilightController
 {
-    public partial class LedModeConfigure : UserControl
+    public partial class LedPoint : UserControl
     {
-        public LedModeConfigure()
+        public void SetColor(int r, int g, int b)
+        {
+            this.BackColor = Color.FromArgb(r, g, b);
+        }
+
+        public LedPoint()
         {
             InitializeComponent();
+            BackColor = Color.Black;
         }
     }
 }
