@@ -17,9 +17,11 @@ namespace AmbilightController
     public partial class ConfigForm : Form
     {
 
-        private bool performanceMonitor = true;
+        private bool PerformanceMonitoringIsActive = true;
         private DesktopDuplicator desktopDuplicator;
         Stopwatch sw = new Stopwatch();
+
+        LedDisplayForm ledsView = new LedDisplayForm();
 
         public ConfigForm()
         {
@@ -35,19 +37,18 @@ namespace AmbilightController
             }
 
             //if (!performanceMonitor) chart1.Visible = false;
-            if (performanceMonitor) PerformanceMonitorEvent += frame_status_update;
+            if (PerformanceMonitoringIsActive) PerformanceMonitorEvent += frame_status_update;
         }
 
+        #region desktop capture
         private void ConfigForm_Shown(object sender, EventArgs e)
         {
-            Thread tr = new Thread(() =>
+            Thread CaptureLoopThread = new Thread(() =>
             {
-                if (performanceMonitor) sw.Restart();
+                if (PerformanceMonitoringIsActive) sw.Restart();
                 captureLoop();
             });
-            tr.Start();
-
-            ledDisplay.UpdateDisplayQuantity(40, ScreenRegion.Top);
+            CaptureLoopThread.Start();
         }
         DesktopFrame frame = null;
 
@@ -69,7 +70,7 @@ namespace AmbilightController
                     // if(updateBgEnabled) BackgroundImage = frame.DesktopImage;
 
                     PerformanceMonitorEvent?.BeginInvoke(sw.Elapsed.TotalMilliseconds, null, null);
-                    if (performanceMonitor) sw.Restart();
+                    if (PerformanceMonitoringIsActive) sw.Restart();
                 }
             }
             catch (ThreadAbortException) { }
@@ -96,30 +97,46 @@ namespace AmbilightController
             //chart1.Series[0].Points.Add(Math.Round(1000 / frameMS));
             Text = Math.Round(1000 / frameMS).ToString();
         }
+        #endregion
 
-        private void FormDemo_FormClosing(object sender, FormClosingEventArgs e)
+        private void ConfigForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             stopUpdate = true;
         }
 
         private bool stopUpdate = false;
 
-        private void FormDemo_ResizeBegin(object sender, EventArgs e)
+
+        private void ConfigForm_Load(object sender, EventArgs e)
         {
-            BackgroundImage = null;
+            UpdateControls();
+            ledsView.Show();
         }
 
-        private void FormDemo_ResizeEnd(object sender, EventArgs e)
+        #region settings
+        private void ledChangeDirection_Click(object sender, EventArgs e)
         {
+            ledChangeDirectionButton.Text = ledChangeDirectionButton.Text.Contains("Counter") ? "Clockwise" : "Counter-Clockwise";
         }
 
+        private void ledSettingsApply_Click(object sender, EventArgs e)
+        {
+            UpdateLedSettingsValues();
+            UpdateControls();
+        }
 
-        #region Update Led Display Quantity
+        private void UpdateControls()
+        {
+            ledsView.ledDisplay.UpdateDisplayQuantity(ledCountTopControl.Value, ScreenRegion.Top);
+            ledsView.ledDisplay.UpdateDisplayQuantity(ledCountRightControl.Value, ScreenRegion.Right);
+            ledsView.ledDisplay.UpdateDisplayQuantity(ledCountBottomControl.Value, ScreenRegion.Bottom);
+            ledsView.ledDisplay.UpdateDisplayQuantity(ledCountLeftControl.Value, ScreenRegion.Left);
+        }
 
-        List<LedPoint> LedList = new List<LedPoint>();
+        private void UpdateLedSettingsValues()
+        {
 
-
-
+        }
         #endregion
     }
 }

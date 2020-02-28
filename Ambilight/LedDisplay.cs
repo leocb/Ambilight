@@ -20,27 +20,49 @@ namespace AmbilightController
         }
 
 
-        public void UpdateDisplayQuantity(int quantity, ScreenRegion region)
+        public void UpdateDisplayQuantity(decimal quantity, ScreenRegion region)
         {
             TableLayoutPanel panel = GetPanelByRegion(region);
 
+            panel.SuspendLayout();
+
             if (panel.HasChildren) panel.Controls.Clear();
 
-            panel.ColumnCount = 0;
-            panel.ColumnStyles.Clear();
-            panel.Controls.Clear();
-            for (int i = 0; i < quantity; i++)
+            if (region == ScreenRegion.Top || region == ScreenRegion.Bottom)
             {
-                LedPoint led = new LedPoint();
-                led.Dock = DockStyle.Fill;
-                led.Margin = new Padding(1);
+                panel.ColumnCount = 0;
+                panel.ColumnStyles.Clear();
+                panel.Controls.Clear();
+                for (int i = 0; i < quantity; i++)
+                {
+                    LedPoint led = new LedPoint();
+                    led.Dock = DockStyle.Fill;
+                    led.Margin = new Padding(1);
 
-                panel.ColumnCount++;
-                panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-                panel.Controls.Add(led, i, 0);
+                    panel.ColumnCount++;
+                    panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+                    panel.Controls.Add(led, i, 0);
+                }
+            }
+            else
+            {
+
+                panel.RowCount = 0;
+                panel.RowStyles.Clear();
+                panel.Controls.Clear();
+                for (int i = 0; i < quantity; i++)
+                {
+                    LedPoint led = new LedPoint();
+                    led.Dock = DockStyle.Fill;
+                    led.Margin = new Padding(1);
+
+                    panel.RowCount++;
+                    panel.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+                    panel.Controls.Add(led, i, 0);
+                }
             }
 
-
+            panel.ResumeLayout();
         }
 
         private TableLayoutPanel GetPanelByRegion(ScreenRegion region)

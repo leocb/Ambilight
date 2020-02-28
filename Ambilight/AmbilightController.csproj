@@ -60,6 +60,13 @@
     <Compile Include="LedDisplay.Designer.cs">
       <DependentUpon>LedDisplay.cs</DependentUpon>
     </Compile>
+    <Compile Include="LedDisplayForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LedDisplayForm.Designer.cs">
+      <DependentUpon>LedDisplayForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LedManager.cs" />
     <Compile Include="LedPoint.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -85,6 +92,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="LedDisplay.resx">
       <DependentUpon>LedDisplay.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LedDisplayForm.resx">
+      <DependentUpon>LedDisplayForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LedPoint.resx">
       <DependentUpon>LedPoint.cs</DependentUpon>

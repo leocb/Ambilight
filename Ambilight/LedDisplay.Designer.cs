@@ -44,6 +44,7 @@
             // 
             // label1
             // 
+            this.label1.BackColor = System.Drawing.Color.White;
             this.label1.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(1, 0);
             this.label1.Name = "label1";
@@ -54,6 +55,7 @@
             // 
             // label2
             // 
+            this.label2.BackColor = System.Drawing.Color.White;
             this.label2.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(34, 0);
             this.label2.Name = "label2";
@@ -64,8 +66,9 @@
             // label3
             // 
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label3.BackColor = System.Drawing.Color.White;
             this.label3.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(380, 0);
+            this.label3.Location = new System.Drawing.Point(705, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(27, 13);
             this.label3.TabIndex = 10;
@@ -75,8 +78,9 @@
             // label4
             // 
             this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label4.BackColor = System.Drawing.Color.White;
             this.label4.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(414, 0);
+            this.label4.Location = new System.Drawing.Point(739, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(27, 13);
             this.label4.TabIndex = 11;
@@ -86,8 +90,9 @@
             // label5
             // 
             this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.label5.BackColor = System.Drawing.Color.White;
             this.label5.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(414, 296);
+            this.label5.Location = new System.Drawing.Point(739, 437);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(27, 13);
             this.label5.TabIndex = 12;
@@ -97,8 +102,9 @@
             // label6
             // 
             this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label6.BackColor = System.Drawing.Color.White;
             this.label6.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(34, 296);
+            this.label6.Location = new System.Drawing.Point(34, 437);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(27, 13);
             this.label6.TabIndex = 14;
@@ -107,8 +113,9 @@
             // label7
             // 
             this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label7.BackColor = System.Drawing.Color.White;
             this.label7.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(1, 296);
+            this.label7.Location = new System.Drawing.Point(1, 437);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(27, 13);
             this.label7.TabIndex = 15;
@@ -118,8 +125,9 @@
             // label8
             // 
             this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.label8.BackColor = System.Drawing.Color.White;
             this.label8.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(380, 296);
+            this.label8.Location = new System.Drawing.Point(705, 437);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(27, 13);
             this.label8.TabIndex = 17;
@@ -128,28 +136,28 @@
             // 
             // LedPanelBottom
             // 
-            this.LedPanelBottom.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+            this.LedPanelBottom.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.LedPanelBottom.AutoSize = true;
             this.LedPanelBottom.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.LedPanelBottom.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.LedPanelBottom.BackColor = System.Drawing.Color.Blue;
             this.LedPanelBottom.ColumnCount = 1;
             this.LedPanelBottom.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.LedPanelBottom.Location = new System.Drawing.Point(34, 288);
+            this.LedPanelBottom.Location = new System.Drawing.Point(34, 429);
             this.LedPanelBottom.Name = "LedPanelBottom";
             this.LedPanelBottom.Padding = new System.Windows.Forms.Padding(4);
             this.LedPanelBottom.RowCount = 1;
             this.LedPanelBottom.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.LedPanelBottom.Size = new System.Drawing.Size(373, 8);
+            this.LedPanelBottom.Size = new System.Drawing.Size(698, 8);
             this.LedPanelBottom.TabIndex = 19;
             // 
             // LedPanelLeft
             // 
-            this.LedPanelLeft.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            this.LedPanelLeft.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.LedPanelLeft.AutoSize = true;
             this.LedPanelLeft.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.LedPanelLeft.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.LedPanelLeft.BackColor = System.Drawing.Color.Blue;
             this.LedPanelLeft.ColumnCount = 1;
             this.LedPanelLeft.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.LedPanelLeft.Location = new System.Drawing.Point(0, 12);
@@ -157,33 +165,33 @@
             this.LedPanelLeft.Padding = new System.Windows.Forms.Padding(4);
             this.LedPanelLeft.RowCount = 1;
             this.LedPanelLeft.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.LedPanelLeft.Size = new System.Drawing.Size(8, 284);
+            this.LedPanelLeft.Size = new System.Drawing.Size(8, 425);
             this.LedPanelLeft.TabIndex = 20;
             // 
             // LedPanelRight
             // 
-            this.LedPanelRight.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            this.LedPanelRight.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.LedPanelRight.AutoSize = true;
             this.LedPanelRight.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.LedPanelRight.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.LedPanelRight.BackColor = System.Drawing.Color.Blue;
             this.LedPanelRight.ColumnCount = 1;
             this.LedPanelRight.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.LedPanelRight.Location = new System.Drawing.Point(433, 12);
+            this.LedPanelRight.Location = new System.Drawing.Point(758, 12);
             this.LedPanelRight.Name = "LedPanelRight";
             this.LedPanelRight.Padding = new System.Windows.Forms.Padding(4);
             this.LedPanelRight.RowCount = 1;
             this.LedPanelRight.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.LedPanelRight.Size = new System.Drawing.Size(8, 284);
+            this.LedPanelRight.Size = new System.Drawing.Size(8, 425);
             this.LedPanelRight.TabIndex = 21;
             // 
             // LedPanelTop
             // 
-            this.LedPanelTop.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.LedPanelTop.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.LedPanelTop.AutoSize = true;
             this.LedPanelTop.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.LedPanelTop.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.LedPanelTop.BackColor = System.Drawing.Color.Blue;
             this.LedPanelTop.ColumnCount = 1;
             this.LedPanelTop.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.LedPanelTop.Location = new System.Drawing.Point(34, 12);
@@ -191,7 +199,7 @@
             this.LedPanelTop.Padding = new System.Windows.Forms.Padding(4);
             this.LedPanelTop.RowCount = 1;
             this.LedPanelTop.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.LedPanelTop.Size = new System.Drawing.Size(373, 8);
+            this.LedPanelTop.Size = new System.Drawing.Size(697, 8);
             this.LedPanelTop.TabIndex = 22;
             // 
             // LedDisplay
@@ -212,7 +220,7 @@
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label1);
             this.Name = "LedDisplay";
-            this.Size = new System.Drawing.Size(441, 309);
+            this.Size = new System.Drawing.Size(766, 450);
             this.ResumeLayout(false);
             this.PerformLayout();
 
